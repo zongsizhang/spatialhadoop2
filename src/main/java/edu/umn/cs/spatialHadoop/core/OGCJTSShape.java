@@ -14,6 +14,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import com.vividsolutions.jts.geom.Point;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.io.Text;
@@ -268,6 +269,14 @@ public class OGCJTSShape implements Shape {
         g.drawPolyline(xpoints, ypoints, n);
       else
         g.fillPolygon(xpoints, ypoints, n);
+    }else if (geom instanceof com.vividsolutions.jts.geom.Point){
+        com.vividsolutions.jts.geom.Point point = (Point) geom;
+        double px = point.getX();
+        double py = point.getY();
+
+        int x = (int)Math.round(px * xscale);
+        int y = (int)Math.round(py * yscale);
+        g.fillRect(x, y, 1, 1);
     }
   }
 
@@ -280,7 +289,7 @@ public class OGCJTSShape implements Shape {
    * @param imageHeight
    * @param scale
    * @param shape_color
-   * @deprecated - use {@link #drawJTSGeom(Graphics, Geometry, double, double)}
+   * @deprecated - use {@link #drawJTSGeom(Graphics, Geometry, double, double, boolean)}
    */
   @Deprecated
   private static void drawJTSShape(Graphics graphics, Geometry geom,
@@ -324,6 +333,15 @@ public class OGCJTSShape implements Shape {
       // Draw the polygon
       //graphics.setColor(new Color((shape_color.getRGB() & 0x00FFFFFF) | (color_alpha << 24), true));
       graphics.drawPolyline(xpoints, ypoints, xpoints.length);
+    }else if (geom instanceof com.vividsolutions.jts.geom.Point){
+        Point point = (Point) geom;
+        double px = point.getX();
+        double py = point.getY();
+
+        int x = (int) Math.round((px - fileMbr.x1) * imageWidth / fileMbr.getWidth());
+        int y = (int) Math.round((py - fileMbr.y1) * imageHeight / fileMbr.getHeight());
+
+        graphics.fillRect(x, y, 1, 1);
     }
   }
   
