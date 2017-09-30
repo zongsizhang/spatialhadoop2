@@ -139,15 +139,18 @@ public class Point implements Shape, Comparable<Point> {
   
   @Override
   public Text toText(Text text) {
-    TextSerializerHelper.serializeDouble(x, text, ',');
-    TextSerializerHelper.serializeDouble(y, text, '\0');
+  	byte[] bytes = "POINT (".getBytes();
+  	text.append(bytes, 0, bytes.length);
+    TextSerializerHelper.serializeDouble(x, text, ' ');
+    TextSerializerHelper.serializeDouble(y, text, ')');
     return text;
   }
   
   @Override
   public void fromText(Text text) {
-    x = TextSerializerHelper.consumeDouble(text, ',');
-    y = TextSerializerHelper.consumeDouble(text, '\0');
+  	com.vividsolutions.jts.geom.Point p = (com.vividsolutions.jts.geom.Point)TextSerializerHelper.consumeGeometryJTS(text, '\t');
+    x = p.getX();
+    y = p.getY();
   }
 
   @Override
