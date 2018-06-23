@@ -148,7 +148,7 @@ public class Point implements Shape, Comparable<Point> {
   
   @Override
   public void fromText(Text text) {
-  	String value = new String(text.getBytes());
+  	String value = text.toString();
   	if (value.startsWith("POINT")){
 		com.vividsolutions.jts.geom.Point p = (com.vividsolutions.jts.geom.Point)TextSerializerHelper.consumeGeometryJTS(text, '\t');
 		x = p.getX();
