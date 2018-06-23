@@ -12,6 +12,7 @@ import java.awt.Graphics;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import org.apache.hadoop.io.Text;
 
@@ -148,7 +149,7 @@ public class Point implements Shape, Comparable<Point> {
   
   @Override
   public void fromText(Text text) {
-  	String value = text.toString();
+  	String value = new String(text.getBytes());
   	if (value.startsWith("POINT")){
 		com.vividsolutions.jts.geom.Point p = (com.vividsolutions.jts.geom.Point)TextSerializerHelper.consumeGeometryJTS(text, '\t');
 		x = p.getX();
