@@ -13,8 +13,21 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+/**
+ * Hadoop MapReduce takes strings as input and uses key-value pair as the intermediate format between mapper and reducer.
+ */
 public class SpatialAggregation
 {
+    /**
+     * Mapper:
+     * Input: take an input string "shape,shape". The delimiter is TBD.
+     * Split the input string to two fields, shape, shape.
+     * Use the first shape as the key in key-value pair and append 1 as the count base.
+     *
+     * Output: generate key-value pair <shape,1>. Shape is just a plain text. 1 is a numerical number.
+     *
+     * NOTE: No need to parse shape string. Just simply treat it as a key.
+     */
     public static class IntSumMapper
             extends Mapper<Object, Text, Text, IntWritable>{
 
@@ -32,6 +45,13 @@ public class SpatialAggregation
         }
     }
 
+    /**
+     * Reducer:
+     * Input: take an input key-value pair from the mapper. <shape,1>
+     * Simply adds up all 1 together for each key. In other words, this is a CountByKey.
+     *
+     * Output: generate key-value pair <shape,count>.
+     */
     public static class IntSumReducer
             extends Reducer<Text,IntWritable,Text,IntWritable> {
         private IntWritable result = new IntWritable();
