@@ -132,7 +132,7 @@ public class DistributedJoin {
 
 	public static class RedistributeJoinMap extends MapReduceBase
 			implements
-			Mapper<PairWritable<Rectangle>, PairWritable<? extends Writable>, NullWritable, Shape> {
+			Mapper<PairWritable<Rectangle>, PairWritable<? extends Writable>, Shape, Shape> {
 
 		private boolean isFilterOnly;
 		
@@ -144,7 +144,7 @@ public class DistributedJoin {
 		
 		public void map(final PairWritable<Rectangle> key,
 				final PairWritable<? extends Writable> value,
-				final OutputCollector<NullWritable, Shape> output, final Reporter reporter)
+				final OutputCollector<Shape, Shape> output, final Reporter reporter)
 				throws IOException {
 		
 		  final Rectangle dupAvoidanceMBR = !key.first.isValid()
@@ -186,7 +186,7 @@ public class DistributedJoin {
 									        r.getMBR().y1, s.getMBR().y1);
 									    // Employ reference point duplicate avoidance technique
                       if (dupAvoidanceMBR.contains(intersectionX, intersectionY))
-									      output.collect(NullWritable.get(), s);
+									      output.collect(r, s);
 									  } catch (IOException e) {
 									    e.printStackTrace();
 									  }	
@@ -204,7 +204,7 @@ public class DistributedJoin {
 									        r.getMBR().y1, s.getMBR().y1);
 									    // Employ reference point duplicate avoidance technique
                       if (dupAvoidanceMBR.contains(intersectionX, intersectionY))
-									      output.collect(NullWritable.get(), s);
+									      output.collect(r, s);
 									  } catch (IOException e) {
 									    e.printStackTrace();
 									  }	
@@ -233,7 +233,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 										try {
-											output.collect(NullWritable.get(), s);
+											output.collect(r, s);
 										} catch (IOException e) {
 											e.printStackTrace();
 										}
@@ -245,7 +245,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 										try {
-											output.collect(NullWritable.get(), s);
+											output.collect(r, s);
 										} catch (IOException e) {
 											e.printStackTrace();
 										}
@@ -265,7 +265,7 @@ public class DistributedJoin {
 					public void collect(Shape r, Shape s) {
 						try {
 							if (dupAvoidanceMBR == null) {
-								output.collect(NullWritable.get(), s);
+								output.collect(r, s);
 							} else {
 								// Reference point duplicate avoidance technique
 								// The reference point is the lowest corner of
@@ -276,7 +276,7 @@ public class DistributedJoin {
 								double intersectionX = Math.max(r.getMBR().x1, s.getMBR().x1);
 								double intersectionY = Math.max(r.getMBR().y1, s.getMBR().y1);
                 if (dupAvoidanceMBR.contains(intersectionX, intersectionY))
-									output.collect(NullWritable.get(), s);
+									output.collect(r, s);
 							}
 						} catch (IOException e) {
 							e.printStackTrace();
@@ -294,7 +294,7 @@ public class DistributedJoin {
 
 	public static class RedistributeJoinMapNoDupAvoidance extends MapReduceBase
 			implements
-			Mapper<PairWritable<Rectangle>, PairWritable<? extends Writable>, NullWritable, Shape> {
+			Mapper<PairWritable<Rectangle>, PairWritable<? extends Writable>, Shape, Shape> {
 
 		private boolean isFilterOnly;
 		
@@ -306,7 +306,7 @@ public class DistributedJoin {
 		
 		public void map(final PairWritable<Rectangle> key,
 				final PairWritable<? extends Writable> value,
-				final OutputCollector<NullWritable, Shape> output, final Reporter reporter)
+				final OutputCollector<Shape, Shape> output, final Reporter reporter)
 				throws IOException {
 			
 			final Rectangle mapperMBR = !key.first.isValid()
@@ -344,7 +344,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 									  try {
-									    output.collect(NullWritable.get(), s);
+									    output.collect(r, s);
 									  } catch (IOException e) {
 									    e.printStackTrace();
 									  }	
@@ -356,7 +356,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 									  try {
-									    output.collect(NullWritable.get(), s);
+									    output.collect(r, s);
 									  } catch (IOException e) {
 									    e.printStackTrace();
 									  }	
@@ -384,7 +384,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 										try {
-											output.collect(NullWritable.get(), s);
+											output.collect(r, s);
 										} catch (IOException e) {
 											e.printStackTrace();
 										}	
@@ -396,7 +396,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 										try {
-											output.collect(NullWritable.get(), s);
+											output.collect(r, s);
 										} catch (IOException e) {
 											e.printStackTrace();
 										}	
@@ -415,7 +415,7 @@ public class DistributedJoin {
 					@Override
 					public void collect(Shape r, Shape s) {
 						try {
-							output.collect(NullWritable.get(), s);
+							output.collect(r, s);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}	
@@ -748,7 +748,7 @@ public class DistributedJoin {
 	}
 
 	public static class RepartitionJoinReduce<T extends Shape> extends
-			MapReduceBase implements Reducer<IntWritable, T, NullWritable, Shape> {
+			MapReduceBase implements Reducer<IntWritable, T, Shape, Shape> {
 
 		private Path indexDir;
 		private Shape shape;
@@ -769,7 +769,7 @@ public class DistributedJoin {
 
 		@Override
 		public void reduce(IntWritable cellIndex, Iterator<T> shapes,
-				final OutputCollector<NullWritable, Shape> output, Reporter reporter)
+				final OutputCollector<Shape, Shape> output, Reporter reporter)
 				throws IOException {
 		 if(!inactiveMode){
 			
@@ -826,7 +826,7 @@ public class DistributedJoin {
 													@Override
 													public void collect(Shape r, Shape s) {
 													  try {
-													    output.collect(NullWritable.get(), s);
+													    output.collect(r, s);
 													  } catch (IOException e) {
 													    e.printStackTrace();
 													  }	
@@ -839,7 +839,7 @@ public class DistributedJoin {
 													@Override
 													public void collect(Shape r, Shape s) {
 													  try {
-													    output.collect(NullWritable.get(), s);
+													    output.collect(r, s);
 													  } catch (IOException e) {
 													    e.printStackTrace();
 													  }	
