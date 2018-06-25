@@ -108,6 +108,7 @@ public class DistributedJoin {
 							if (intersection != null
 									&& intersection.getWidth()
 											* intersection.getHeight() > 0) {
+								LOG.info("LOGIC GOES TO SPATIAL JOIN WITH INDEX");
 								output.collect(r, s);
 							} else {
 								LOG.info("Skipping touching partitions " + r
