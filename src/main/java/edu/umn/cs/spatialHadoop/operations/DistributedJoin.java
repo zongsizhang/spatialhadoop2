@@ -826,7 +826,7 @@ public class DistributedJoin {
 													@Override
 													public void collect(Shape r, Shape s) {
 													  try {
-													    output.collect(r, s);
+													    output.collect(r, r);
 													  } catch (IOException e) {
 													    e.printStackTrace();
 													  }	
@@ -839,7 +839,7 @@ public class DistributedJoin {
 													@Override
 													public void collect(Shape r, Shape s) {
 													  try {
-													    output.collect(r, s);
+													    output.collect(r, r);
 													  } catch (IOException e) {
 													    e.printStackTrace();
 													  }	
