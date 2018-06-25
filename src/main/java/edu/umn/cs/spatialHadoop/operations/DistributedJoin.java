@@ -108,7 +108,7 @@ public class DistributedJoin {
 							if (intersection != null
 									&& intersection.getWidth()
 											* intersection.getHeight() > 0) {
-								output.collect(r, s);
+								output.collect(r, r);
 							} else {
 								LOG.info("Skipping touching partitions " + r
 										+ ", " + s);
@@ -186,7 +186,7 @@ public class DistributedJoin {
 									        r.getMBR().y1, s.getMBR().y1);
 									    // Employ reference point duplicate avoidance technique
                       if (dupAvoidanceMBR.contains(intersectionX, intersectionY))
-									      output.collect(r, s);
+									      output.collect(r, r);
 									  } catch (IOException e) {
 									    e.printStackTrace();
 									  }	
@@ -204,7 +204,7 @@ public class DistributedJoin {
 									        r.getMBR().y1, s.getMBR().y1);
 									    // Employ reference point duplicate avoidance technique
                       if (dupAvoidanceMBR.contains(intersectionX, intersectionY))
-									      output.collect(r, s);
+									      output.collect(r, r);
 									  } catch (IOException e) {
 									    e.printStackTrace();
 									  }	
@@ -233,7 +233,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 										try {
-											output.collect(r, s);
+											output.collect(r, r);
 										} catch (IOException e) {
 											e.printStackTrace();
 										}
@@ -245,7 +245,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 										try {
-											output.collect(r, s);
+											output.collect(r, r);
 										} catch (IOException e) {
 											e.printStackTrace();
 										}
@@ -265,7 +265,7 @@ public class DistributedJoin {
 					public void collect(Shape r, Shape s) {
 						try {
 							if (dupAvoidanceMBR == null) {
-								output.collect(r, s);
+								output.collect(r, r);
 							} else {
 								// Reference point duplicate avoidance technique
 								// The reference point is the lowest corner of
@@ -276,7 +276,7 @@ public class DistributedJoin {
 								double intersectionX = Math.max(r.getMBR().x1, s.getMBR().x1);
 								double intersectionY = Math.max(r.getMBR().y1, s.getMBR().y1);
                 if (dupAvoidanceMBR.contains(intersectionX, intersectionY))
-									output.collect(r, s);
+									output.collect(r, r);
 							}
 						} catch (IOException e) {
 							e.printStackTrace();
@@ -344,7 +344,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 									  try {
-									    output.collect(r, s);
+									    output.collect(r, r);
 									  } catch (IOException e) {
 									    e.printStackTrace();
 									  }	
@@ -356,7 +356,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 									  try {
-									    output.collect(r, s);
+									    output.collect(r, r);
 									  } catch (IOException e) {
 									    e.printStackTrace();
 									  }	
@@ -384,7 +384,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 										try {
-											output.collect(r, s);
+											output.collect(r, r);
 										} catch (IOException e) {
 											e.printStackTrace();
 										}	
@@ -396,7 +396,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 										try {
-											output.collect(r, s);
+											output.collect(r, r);
 										} catch (IOException e) {
 											e.printStackTrace();
 										}	
@@ -415,7 +415,7 @@ public class DistributedJoin {
 					@Override
 					public void collect(Shape r, Shape s) {
 						try {
-							output.collect(r, s);
+							output.collect(r, r);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}	
