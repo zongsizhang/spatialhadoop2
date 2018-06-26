@@ -86,9 +86,9 @@ public class TextOutputFormat<K, V> extends FileOutputFormat<K, V> {
 
       boolean nullKey = key == null || key instanceof NullWritable;
       boolean nullValue = value == null || value instanceof NullWritable;
-      if (nullKey && nullValue) {
-        return;
-      }
+//      if (nullKey && nullValue) {
+//        return;
+//      }
 //      if (!nullKey) {
 //        writeObject(key);
 //      }
@@ -98,9 +98,7 @@ public class TextOutputFormat<K, V> extends FileOutputFormat<K, V> {
 //      if (!nullValue) {
 //        writeObject(value);
 //      }
-      writeObject(key);
-      writeObject(keyValueSeparator);
-      writeObject(value);
+      writeObject("test");
       out.write(newline);
     }
 
