@@ -1241,9 +1241,11 @@ public class DistributedJoin {
 		
 		String repartition = params.get("repartition", "no");
 		if (repartition.equals("auto")) {
+		  LOG.info("Decide to do dj smart");
 			result_size = distributedJoinSmart(inputPaths, outputPath, params);
 		} else if (repartition.equals("yes")) {
-			int file_to_repartition = selectRepartition(inputPaths, params);
+      LOG.info("Decide to do selectRepartition");
+      int file_to_repartition = selectRepartition(inputPaths, params);
 			if (params.get("direct-join").equals("yes")) {
 				result_size = repartitionJoinStep(inputPaths,
 						file_to_repartition, outputPath, params);
@@ -1252,7 +1254,8 @@ public class DistributedJoin {
 				result_size = joinStep(inputPaths, outputPath, params);
 			}
 		} else if (repartition.equals("no")) {
-			result_size = joinStep(inputPaths, outputPath, params);
+      LOG.info("Decide to do joinStep");
+      result_size = joinStep(inputPaths, outputPath, params);
 		} else {
 			throw new RuntimeException("Illegal parameter repartition:"
 					+ repartition);
