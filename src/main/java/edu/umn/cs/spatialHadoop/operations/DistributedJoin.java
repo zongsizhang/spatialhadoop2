@@ -99,6 +99,7 @@ public class DistributedJoin {
 		public void selectCellPairs(GlobalIndex<Partition> gIndex1,
 				GlobalIndex<Partition> gIndex2,
 				final ResultCollector2<Partition, Partition> output) {
+			LOG.info("Run SpatialJoinFilter");
 			// Do a spatial join between the two global indexes
 			GlobalIndex.spatialJoin(gIndex1, gIndex2,
 					new ResultCollector2<Partition, Partition>() {
@@ -187,7 +188,7 @@ public class DistributedJoin {
 									        r.getMBR().y1, s.getMBR().y1);
 									    // Employ reference point duplicate avoidance technique
                       if (dupAvoidanceMBR.contains(intersectionX, intersectionY))
-									      output.collect(r, r);
+									      output.collect(r, s);
 									  } catch (IOException e) {
 									    e.printStackTrace();
 									  }	
@@ -205,7 +206,7 @@ public class DistributedJoin {
 									        r.getMBR().y1, s.getMBR().y1);
 									    // Employ reference point duplicate avoidance technique
                       if (dupAvoidanceMBR.contains(intersectionX, intersectionY))
-									      output.collect(r, r);
+									      output.collect(r, s);
 									  } catch (IOException e) {
 									    e.printStackTrace();
 									  }	
@@ -234,7 +235,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 										try {
-											output.collect(r, r);
+											output.collect(r, s);
 										} catch (IOException e) {
 											e.printStackTrace();
 										}
@@ -246,7 +247,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 										try {
-											output.collect(r, r);
+											output.collect(r, s);
 										} catch (IOException e) {
 											e.printStackTrace();
 										}
@@ -266,7 +267,7 @@ public class DistributedJoin {
 					public void collect(Shape r, Shape s) {
 						try {
 							if (dupAvoidanceMBR == null) {
-								output.collect(r, r);
+								output.collect(r, s);
 							} else {
 								// Reference point duplicate avoidance technique
 								// The reference point is the lowest corner of
@@ -277,7 +278,7 @@ public class DistributedJoin {
 								double intersectionX = Math.max(r.getMBR().x1, s.getMBR().x1);
 								double intersectionY = Math.max(r.getMBR().y1, s.getMBR().y1);
                 if (dupAvoidanceMBR.contains(intersectionX, intersectionY))
-									output.collect(r, r);
+									output.collect(r, s);
 							}
 						} catch (IOException e) {
 							e.printStackTrace();
@@ -345,7 +346,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 									  try {
-									    output.collect(r, r);
+									    output.collect(r, s);
 									  } catch (IOException e) {
 									    e.printStackTrace();
 									  }	
@@ -357,7 +358,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 									  try {
-									    output.collect(r, r);
+									    output.collect(r, s);
 									  } catch (IOException e) {
 									    e.printStackTrace();
 									  }	
@@ -385,7 +386,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 										try {
-											output.collect(r, r);
+											output.collect(r, s);
 										} catch (IOException e) {
 											e.printStackTrace();
 										}	
@@ -397,7 +398,7 @@ public class DistributedJoin {
 									@Override
 									public void collect(Shape r, Shape s) {
 										try {
-											output.collect(r, r);
+											output.collect(r, s);
 										} catch (IOException e) {
 											e.printStackTrace();
 										}	
@@ -416,7 +417,7 @@ public class DistributedJoin {
 					@Override
 					public void collect(Shape r, Shape s) {
 						try {
-							output.collect(r, r);
+							output.collect(r, s);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}	
@@ -638,6 +639,7 @@ public class DistributedJoin {
 	public static <S extends Shape> long joinStep(Path[] inFiles,
 			Path userOutputPath, OperationsParams params) throws IOException {
 		long t1 = System.currentTimeMillis();
+    LOG.info("Run joinStep");
 
 		JobConf job = new JobConf(params, DistributedJoin.class);
 
@@ -827,7 +829,7 @@ public class DistributedJoin {
 													@Override
 													public void collect(Shape r, Shape s) {
 													  try {
-													    output.collect(r, r);
+													    output.collect(r, s);
 													  } catch (IOException e) {
 													    e.printStackTrace();
 													  }	
@@ -840,7 +842,7 @@ public class DistributedJoin {
 													@Override
 													public void collect(Shape r, Shape s) {
 													  try {
-													    output.collect(r, r);
+													    output.collect(r, s);
 													  } catch (IOException e) {
 													    e.printStackTrace();
 													  }	
@@ -886,7 +888,7 @@ public class DistributedJoin {
 	protected static long repartitionJoinStep(final Path[] inputFiles,
 			int fileToRepartition, Path outputFile, OperationsParams params)
 			throws IOException {
-
+    LOG.info("Run repartitionJoinStep");
 		boolean overwrite = params.getBoolean("overwrite", false);
 		Shape stockShape = params.getShape("shape");
 
@@ -1001,7 +1003,8 @@ public class DistributedJoin {
 	@SuppressWarnings("unchecked")
 	public static long distributedJoinSmart(final Path[] inputFiles,
 			Path userOutputPath, OperationsParams params) throws IOException, InterruptedException {
-		Path[] originalInputFiles = inputFiles.clone();
+    LOG.info("Run distributedJoinSmart");
+    Path[] originalInputFiles = inputFiles.clone();
 		FileSystem outFs = inputFiles[0].getFileSystem(params);
 		Path outputPath = userOutputPath;
 		if (outputPath == null) {
