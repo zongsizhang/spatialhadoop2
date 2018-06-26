@@ -280,7 +280,7 @@ public class SpatialAlgorithms {
   public static<S1 extends Shape, S2 extends Shape> int SpatialJoin_planeSweep(
       final S1[] R, final S2[] S, ResultCollector2<S1, S2> output, Reporter reporter) {
     int count = 0;
-
+    LOG.info("Run SpatialJoin_planeSweep");
     final Comparator<Shape> comparator = new Comparator<Shape>() {
       @Override
       public int compare(Shape o1, Shape o2) {
@@ -297,7 +297,6 @@ public class SpatialAlgorithms {
     int i = 0, j = 0;
 
     try {
-      LOG.info("Run SpatialJoin_planeSweep");
       while (i < R.length && j < S.length) {
         S1 r;
         S2 s;

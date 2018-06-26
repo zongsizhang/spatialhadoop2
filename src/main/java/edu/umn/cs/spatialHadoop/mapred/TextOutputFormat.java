@@ -89,15 +89,18 @@ public class TextOutputFormat<K, V> extends FileOutputFormat<K, V> {
       if (nullKey && nullValue) {
         return;
       }
-      if (!nullKey) {
-        writeObject(key);
-      }
-      if (!(nullKey || nullValue)) {
-        out.write(keyValueSeparator);
-      }
-      if (!nullValue) {
-        writeObject(value);
-      }
+//      if (!nullKey) {
+//        writeObject(key);
+//      }
+//      if (!(nullKey || nullValue)) {
+//        out.write(keyValueSeparator);
+//      }
+//      if (!nullValue) {
+//        writeObject(value);
+//      }
+      writeObject(key);
+      writeObject(keyValueSeparator);
+      writeObject(value);
       out.write(newline);
     }
 
