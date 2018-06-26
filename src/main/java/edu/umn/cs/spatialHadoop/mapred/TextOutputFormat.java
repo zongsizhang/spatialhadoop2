@@ -99,7 +99,7 @@ public class TextOutputFormat<K, V> extends FileOutputFormat<K, V> {
 //        writeObject(value);
 //      }
       writeObject(key);
-      writeObject(keyValueSeparator);
+      out.write(keyValueSeparator);
       writeObject(value);
       out.write(newline);
     }
