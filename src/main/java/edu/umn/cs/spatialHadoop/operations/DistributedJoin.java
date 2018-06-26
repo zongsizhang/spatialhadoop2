@@ -639,7 +639,7 @@ public class DistributedJoin {
 	public static <S extends Shape> long joinStep(Path[] inFiles,
 			Path userOutputPath, OperationsParams params) throws IOException {
 		long t1 = System.currentTimeMillis();
-    LOG.info("Run joinStep");
+    LOG.info("Run joinStep - repartition - no");
 
 		JobConf job = new JobConf(params, DistributedJoin.class);
 
