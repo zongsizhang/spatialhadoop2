@@ -297,6 +297,7 @@ public class SpatialAlgorithms {
     int i = 0, j = 0;
 
     try {
+      LOG.info("Run SpatialJoin_planeSweep");
       while (i < R.length && j < S.length) {
         S1 r;
         S2 s;
