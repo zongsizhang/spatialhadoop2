@@ -26,6 +26,7 @@ import edu.umn.cs.spatialHadoop.visualization.HeatMapPlot;
 import edu.umn.cs.spatialHadoop.visualization.LakesPlot;
 import edu.umn.cs.spatialHadoop.visualization.MagickPlot;
 import edu.umn.cs.spatialHadoop.delaunay.DelaunayTriangulation;
+import org.datasyslab.spatialbenchmark.SpatialAggregation;
 
 
 /**
@@ -133,6 +134,8 @@ public class Main {
           "Run Hadoopviz Server");
       
       pgd.addClass("mplot", MagickPlot.class, "Plot using ImageMagick");
+
+      pgd.addClass("apptwo", SpatialAggregation.class, "count on join result");
       
       pgd.driver(args);
       

@@ -3,6 +3,7 @@ package org.datasyslab.spatialbenchmark;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
+import edu.umn.cs.spatialHadoop.OperationsParams;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -12,6 +13,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.util.GenericOptionsParser;
 
 /**
  * Hadoop MapReduce takes strings as input and uses key-value pair as the intermediate format between mapper and reducer.
@@ -69,6 +71,9 @@ public class SpatialAggregation
     }
 
     public static void main(String[] args) throws Exception {
+        final OperationsParams params = new OperationsParams(new GenericOptionsParser(args));
+        final Path input = params.getInputPath();
+        final Path output = params.getOutputPath();
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf, SpatialAggregation.class.getSimpleName());
         job.setJarByClass(SpatialAggregation.class);
@@ -77,8 +82,8 @@ public class SpatialAggregation
         job.setReducerClass(IntSumReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
-        FileInputFormat.addInputPath(job, new Path(args[0]));
-        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+        FileInputFormat.addInputPath(job, new Path(input.toString()));
+        FileOutputFormat.setOutputPath(job, new Path(output.toString()));
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
 }
