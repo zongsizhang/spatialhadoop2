@@ -39,7 +39,8 @@ public class SpatialAggregation
         public void map(Object key, Text value, Context context
         ) throws IOException, InterruptedException {
 
-            StringTokenizer itr = new StringTokenizer(value.toString(), ",");
+            StringTokenizer itr = new StringTokenizer(value.toString(), "\t");
+
             assert itr.countTokens() == 2;
             // Still use the original key shape (aka., left shape of join result <shape, shape>) as the key
             word.set(itr.nextToken());
